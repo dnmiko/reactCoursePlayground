@@ -1,0 +1,17 @@
+/*----- What is React? -----*/
+    - React is a JavaScript library for building User Interfaces, it is about building JavaScript-driven apps.
+    - React apps run in the browser.
+    - React utiliza componentes para construir las interfaces gráficas.
+    - El hecho de utilizar componentes nos permite tener un código mucho más fácil de editar, mantener y reutilizar.
+
+/*----- Why to use React? -----*/
+    - React helps to manage the state of the UI.
+    - Huge ecosystem and extremely active community.
+
+/*----- React alternatives -----*/
+    - Angular and Vue
+
+/*----- SIngle Page and Multipage Applications -----*/
+    - In a single page applications we onyl have one HTML served by the server, the content is (re)rendered on the Client. On a multipage application we get back mutiple HTML pages where each one has the content for a given route.
+    - En las multipage applications también es posible utilizar React aunque solamente en componentes pequeños. 
+    - En una single page application nunca tienes que recargar la página ya que nunca es necesario ir de nuevo al servidor por una página, el cliente renderea todo el contenido. 

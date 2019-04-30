@@ -1,0 +1,17 @@
+/*----- Let & Const -----*/
+    - These two types of variables were intriduced in ES6.
+    - Let is the new var, it is used for variable values. 
+    - Use const for variables that hold constant values. 
+
+/*----- Arrow Functions ------*/
+    - A different syntaxis for creating JavaScript functions.
+    - La sintaxis se ve de la siguiente manera:
+        const myFnc = (arguments) => {
+            ...
+        }
+    - Ayuda a resolver problemas con this de JavaScript.
+    - Se puede utilizar la siguiente sintaxis para funciones que tienen sólo un argumento:
+        const myFnc = argument => {
+            ...
+        }
+    
