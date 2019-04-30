@@ -1,5 +1,5 @@
 /*----- Let & Const -----*/
-    - These two types of variables were intriduced in ES6.
+    - These two types of variables were introduced in ES6.
     - Let is the new var, it is used for variable values. 
     - Use const for variables that hold constant values. 
 
@@ -14,4 +14,47 @@
         const myFnc = argument => {
             ...
         }
+
+/*----- Import and export modules -----*/
+    - Los archivos de JavaScript pueden tener exports de constantes o funciones. Pueden tener más de un export y tener un nombre concreto o tener un export default y se exporta de manera default.
+    - Cuando hacemos import de un archivo default no importa cómo llamemos al import, siempre nos regresará el default. Sin embargo, para archivos con más de un export (sin default), los imports deben llamarse igual que los exports del archivo y se llama entre llaves {} NAMED EXPORTS.
+
+/*----- Classes -----*/
+    - Blueprints for objects.
+    - Una clase puede tener propiedades y métodos, la sintaxis es la siguiente:
+        class Person {
+            name = 'Diego' //Atributos o propiedades son Variables
+            call = () => { //Métodos son Funciones 
+                ...
+            }
+        }
+    - En ES7 no es necesario escribir un constructor para asignar propiedades o atributos a una clase, solamente con escribirlos en el cuerpo de la clase funciona. 
+    - En ES7 también hay una manera nueva de crear métodos en las clases, asignándolas a una constante y con una arrow function, así:
+        const myMethod = () => {...}
+    
+/*----- Spread & Rest Operator -----*/
+    - El operador es representado por tres puntos (...).
+    - Se utiliza como spread para separar todos los elementos de un arreglo o de un objeto, por ejemplo:
+        const newArray = [...oldArray, 1, 2] //Agregaría todos los elementos del oldArray al nuevo y le agregaría 1 y 2
+        const newObject = {...oldObject, newProp: newValue} //Agregaría todas las propiedades del viejo objeto y agregaría una nueva
+    - Se utiliza como Rest cuando se utiliza dentro de los argumentos de una función, de esta manera podemos escribir cuantos argumentos queramos y todos ellos serán insertados dentro de un arreglo que podemos utilizar dentro de la función. 
+        function sortArgs(...args) {
+            return args.sort();
+        }
+
+/*----- Destructuring -----*/
+    - Easily extract array element or object properties and store them in variables. 
+    - Destructuring en arreglos se ve así:
+        [a, b] = ['Diego', 'Cifuentes']
+        console.log(a); //Diego
+        console.log(b); //Cifuentes
+    - Destructuring en objetos se ve así:
+        {name} = {name: 'Diego', age:28}
+        console.log(name) //Diego
+        console.log(age) //undefined
+
+/*----- Reference and primitive types -----*/
+    - Cuando se copia una variable con un valor primitivo, se copia el valor; cuando se copia un objeto o un arreglo, se copia una referencia a la unidad de memoria donde se almacenó el objeto. 
+    - Para hacer una copia exacta del objeto o arreglo se puede usar el Spread operator para copiar los valores y no la referencia. 
+
     

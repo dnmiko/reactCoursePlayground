@@ -1,0 +1,24 @@
+/*----- What is JSX and why does it look like HTML -----*/
+    - Parece que estamos escribiendo HTML dentro de los componentes de React, pero no es HTML. En realidad, el código JSX (que parece HTML) es traspilado a JavaScript y a través de la paquetería de React (utilizando el método createElement) se renderea a HTML.
+
+/*----- Props -----*/
+    - Props permite utilizar las propiedades que se ponen al componente desde JSX como si fueran parámetros del componente.
+
+/*----- Props children -----*/
+    - También es posible tomar el valor que se pone dentro de un tag de inicio y fin de un componente, como el contenido hijo de un tag de html. 
+    - Utilizando la propiedad que nos ofrece React {props.children}
+
+/*----- State -----*/
+    - La manera normal de manejar el estado (la que conozco hasta ahora) es únicamente en componentes del tipo clase.
+    - Si el estado cambia, se dispara React para volver a renderear la página.
+    - PROPS sirve para pasar parámetros de un componente padre a un componente hijo, mientras STATE sirve para manejar el estado interno del componente. Un cambio en los dos dispara la acción de React de volver a cargar el DOM. 
+
+/*----- Métodos dentro de clases -----*/
+    - Cuando hagamos una función que es un handler de un evento, poner Handler al final del nombre de la función.
+    - Cuando asignamos una función como handler de un evento, NO LE PONEMOS PARENTESIS ya que eso hace que React la ejecute automáticamente cuando se ejecuta. En vez necesitamos que solamente se tenga una referencia. 
+
+/*----- State with functional-based components -----*/
+    - En la versión 16.8 de React se agregaron los hooks que son funciones. Con ellas se da funcionalidad nueva a los componentes basados en funciones, a través del hook useState se puede utilizar el estado en componentes basados en acciones.
+    - useState regresa un arreglo con exactamente dos elementos. El primero es el estado actual del estado y el segundo es una función que permite modificar el estado y disparar así la acción de que React vuelva a renderear el DOM.
+    - Con React Hooks useState, el estado no hace merge con lo que ya existía sino que se sobreescribe completamente. Entonces siempre será necesario incluir la información del estado viejo cuando se actualiza el estado.
+    - Para mantener los estados siempre presentes aun cuando sobreescribimos, lo más elegante es utilizar useState múltiples veces para mantener distintos estados vivos a la vez. En los componentes basados en clases esto no se puede ya que sólo existe un estado, aquí podemos trabajar con múltiples estados. 
