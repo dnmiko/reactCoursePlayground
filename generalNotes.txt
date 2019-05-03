@@ -22,3 +22,10 @@
     - useState regresa un arreglo con exactamente dos elementos. El primero es el estado actual del estado y el segundo es una función que permite modificar el estado y disparar así la acción de que React vuelva a renderear el DOM.
     - Con React Hooks useState, el estado no hace merge con lo que ya existía sino que se sobreescribe completamente. Entonces siempre será necesario incluir la información del estado viejo cuando se actualiza el estado.
     - Para mantener los estados siempre presentes aun cuando sobreescribimos, lo más elegante es utilizar useState múltiples veces para mantener distintos estados vivos a la vez. En los componentes basados en clases esto no se puede ya que sólo existe un estado, aquí podemos trabajar con múltiples estados. 
+
+/*----- Stateless and Stateful components -----*/
+    - Sin importar si los componentes son basados en clases o en funciones, todos los componentes pueden ser divididos en stateless (si no contienen ningún estado) o en stateful (si contienen estado).
+    - Es una buena práctica tener pocos stateful components y tener muchos más stateless.
+
+/*----- Passing method reference between components -----*/
+    - Es posible pasar la referencia de una función que creamos en un componente padre hacia un componente hijo como si fuera una prop más. Esto le permite modificar el state del componente padre sin la necesidad de tener acceso a su estado. 
