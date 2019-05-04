@@ -29,4 +29,13 @@
 
 /*----- Passing method reference between components -----*/
     - Es posible pasar la referencia de una función que creamos en un componente padre hacia un componente hijo como si fuera una prop más. Esto le permite modificar el state del componente padre sin la necesidad de tener acceso a su estado. 
+    - Esto se puede hacer sobre cualquier evento del componente hijo, por ejemplo, un onChange de un input text puede modificar el estado del padre para renderear cosas dinámicamente en el DOM. 
+
+/*----- Inputs y onChange -----*/
+    - Cuando se inserte un elemento que deba cambiar con la entrada del usuario, por ejemplo, un input de cualquier tipo, es necesario poner un método onChange de manera que manejemos qué hacer con lo que escriba el cliente, sino el input estaría bloqueado a tener el valor que siempre aparece como value. 
+
+/*----- Styling with css -----*/
+    - Cuando creamos un archivo .css dentro de la carpeta de un componente, no está haciendo scope solamente a ese archvio JS o a ese componente sino que finalmente se hace un bundle global.
+    - Es importante importar las hojas de estilos dentro de los componentes que las utilizan, de esta manera webpack inyecta de manera dinámica los estilos. 
+    - También es posible dar estilos utilizando inline styles a través de objetos de JavaScript. De esta manera, los estilos que creemos solamente afectarían al elemento particular al cual estamos haciendo referencia.
     
