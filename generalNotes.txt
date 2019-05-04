@@ -38,4 +38,16 @@
     - Cuando creamos un archivo .css dentro de la carpeta de un componente, no está haciendo scope solamente a ese archvio JS o a ese componente sino que finalmente se hace un bundle global.
     - Es importante importar las hojas de estilos dentro de los componentes que las utilizan, de esta manera webpack inyecta de manera dinámica los estilos. 
     - También es posible dar estilos utilizando inline styles a través de objetos de JavaScript. De esta manera, los estilos que creemos solamente afectarían al elemento particular al cual estamos haciendo referencia.
+
+/*----- Rendering code conditionally -----*/
+    - Cuando abrimos llaves para escribir código de JavaScript no podemos poner expresiones de bloque como if, for, etc. Solamente expresiones sencillas. 
+    - Para estos casos podemos utilizar operadores ternarios de la siguiente forma: 
+        condición ? (que hacer en caso de true) : (que hacer en caso de false)
+    - Sin embargo, esta solución no es óptima ya que puede generar código jsx muy difícil de leer. De manera que la solución correcta sería crear una variable nula y poner una condición dentro del método render (no dentro del return) ya que el render se corre cada vez que React decide volver a renderear la página. Dentro de la condición verificamos el estado y si la condición se cumple, mostramos el código jsx que necesitamos. 
+
+/*----- Displaying lists dinamically -----*/
+    - Cuando se sustituye un arreglo o un objeto del estado de un componente, la mejor práctica es primero crear una copia del arreglo u objeto que buscamos modificar y posteriormente modificarlo. De esta manera, no estamos modificando el apuntador original del arreglo u objeto sino un nuevo arreglo. Esto es mejor para evitar aplicaciones que se comporten de manera inesperada. 
+    - Cuando hacemos display de una lista de manera dinámica, React necesita de una key para identificar de manera única a cada uno de los elementos de la lista, de manera que siempre pueda comparar el virtual DOM actual con el siguiente que debe renderear. 
+    
+
     
