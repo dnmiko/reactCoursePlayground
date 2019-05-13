@@ -50,4 +50,7 @@
     - Cuando hacemos display de una lista de manera dinámica, React necesita de una key para identificar de manera única a cada uno de los elementos de la lista, de manera que siempre pueda comparar el virtual DOM actual con el siguiente que debe renderear. 
     
 
-    
+/*----- Change style dinamically -----*/
+    - Una forma de cambiar el estado de manera dinámica es utilizando una variable style en el método render de un componente. De esta manera, utilizando if statements podemos modificar algunas propiedades de esta variable para hacer que las propiedades cambien. La misma estrategia que para hacer rendering condicional.
+    - Otra forma de agregar estilos de manera dinámica es a través de un arreglo en el cual, a través de push, vamos agregando el nombre de clases (que existen en los archivos css) que deben ser asignados a un elemento. Finalmente, este elemento debe incluir su className haciendo referencia a dicho arreglo con un .join(' ').
+

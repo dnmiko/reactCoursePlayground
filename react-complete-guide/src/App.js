@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Radium from 'radium';
 import './App.css';
 import Person from './Person/Person';
 
@@ -118,9 +119,10 @@ class App extends Component {
   render() {
     // Ejemplo de cómo dar estilo inline.
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
-      border: '1px solid blue',
+      border: '1px solid green',
       padding: '8px',
       cursor: 'pointer'
     }
@@ -143,13 +145,26 @@ class App extends Component {
             />
           })}
         </div>
-      )
+      );
+
+      style.backgroundColor = 'red';
+      style.border = '1px solid red';
+    }
+
+    const classes = [];
+
+    if(this.state.persons.length <= 1){
+      classes.push('red');
+    }
+
+    if(this.state.persons.length <= 0){
+      classes.push('bold');
     }
 
     return (
       <div className="App">
         <h1>Hi, I'm a React App</h1>
-        <p>This is really working!</p>
+        <p className={classes.join(' ')}>This is really working!</p>
         <button
           style={style}
           onClick={this.togglePersonsHandler}>Toggle persons
@@ -162,4 +177,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Radium(App);
