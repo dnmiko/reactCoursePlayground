@@ -16,13 +16,22 @@ class App extends Component {
 
   deleteCharHandler = (charIndex) => {
     const stringArray = this.state.string.split('');
+    stringArray.splice(charIndex, 1);
+
+    const newString = stringArray.join('');
+
+    this.setState({
+      string: newString
+    });
   }
 
   render() {
     let letters = (
       <div>
         {this.state.string.split('').map((char, index) => {
-          return <CharComp char={char} />
+          return <CharComp 
+            char={char}
+            click={() => this.deleteCharHandler(index)} />
         })}
       </div>
     )
@@ -32,7 +41,10 @@ class App extends Component {
         <h1>
           Segundo assignment del curso
         </h1>
-        <input type="text" onChange={this.valueChangedHandler} />
+        <input 
+          type="text" 
+          onChange={this.valueChangedHandler} 
+          value={this.state.string}/>
         <p>
           La longitud del string ingresado es de: {this.state.string.length}
         </p>

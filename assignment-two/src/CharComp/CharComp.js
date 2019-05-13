@@ -3,7 +3,7 @@ import './CharComp.css';
 
 const CharComp = (props) => {
     return (
-        <div className="CharComp">
+        <div className="CharComp" onClick={props.click}>
             <p>
                 {props.char}
             </p>
