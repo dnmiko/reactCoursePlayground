@@ -54,3 +54,11 @@
     - Una forma de cambiar el estado de manera dinámica es utilizando una variable style en el método render de un componente. De esta manera, utilizando if statements podemos modificar algunas propiedades de esta variable para hacer que las propiedades cambien. La misma estrategia que para hacer rendering condicional.
     - Otra forma de agregar estilos de manera dinámica es a través de un arreglo en el cual, a través de push, vamos agregando el nombre de clases (que existen en los archivos css) que deben ser asignados a un elemento. Finalmente, este elemento debe incluir su className haciendo referencia a dicho arreglo con un .join(' ').
 
+/*----- Radium -----*/
+    - Radium es una librería útil para agregar funcionalidades de css al estilo inline de JavaScript. Es un Hihg Order Component (HOC) que envuelve a los componentes que lo utilizan, agregando funcionalidad. 
+    - Para utilizar media queries y animaciones con Radium es necesario envolver el componente App en otro componente de Radium llamado StyleRoot. 
+
+/*----- CSS Modules -----*/
+    - Sirve para unir una hoja de estilos a un módulo de JavaScript y solamente a un módulo, afectándolo sólo a él sin la  necesidad de que las clases sean únicas a lo largo de todo el proyecto.
+    
+

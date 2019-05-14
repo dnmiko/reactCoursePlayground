@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Radium from 'radium';
 import './App.css';
 import Person from './Person/Person';
 
@@ -135,7 +134,7 @@ class App extends Component {
         <div>
           {/* Uso de la función map para renderear de manera dinámica los elementos presentes en mi estado */}
           {this.state.persons.map((person, index) => {
-            return <Person 
+            return <Person
               click={() => this.deletePersonHandler(index)}
               name={person.name}
               age={person.age}
@@ -153,11 +152,11 @@ class App extends Component {
 
     const classes = [];
 
-    if(this.state.persons.length <= 1){
+    if (this.state.persons.length <= 1) {
       classes.push('red');
     }
 
-    if(this.state.persons.length <= 0){
+    if (this.state.persons.length <= 0) {
       classes.push('bold');
     }
 
@@ -177,4 +176,4 @@ class App extends Component {
   }
 }
 
-export default Radium(App);
+export default App;
