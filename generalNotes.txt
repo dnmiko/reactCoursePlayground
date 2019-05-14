@@ -60,5 +60,6 @@
 
 /*----- CSS Modules -----*/
     - Sirve para unir una hoja de estilos a un módulo de JavaScript y solamente a un módulo, afectándolo sólo a él sin la  necesidad de que las clases sean únicas a lo largo de todo el proyecto.
-    
+    - Es necesario hacer eject del proyecto y modificar algunas variables del archivo webpack.config.js. Es muy útil para trabajar en equipo y que las clases no se llamen igual nunca. 
+    - Es necesario crear un objeto que contenga todas las clases del archivo de css que estamos importando para poder utilizarlo en el componente. 
 
