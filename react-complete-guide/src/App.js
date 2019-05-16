@@ -117,16 +117,17 @@ class App extends Component {
 
   render() {
     // Ejemplo de cómo dar estilo inline.
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid green',
-      padding: '8px',
-      cursor: 'pointer'
-    }
+    // const style = {
+    //   backgroundColor: 'green',
+    //   color: 'white',
+    //   font: 'inherit',
+    //   border: '1px solid green',
+    //   padding: '8px',
+    //   cursor: 'pointer'
+    // }
 
     let persons = null;
+    let btnClass = '';
 
     // Rendereo dinámico de contenido según una propiedad del estado.
     if (this.state.showPersons) {
@@ -146,8 +147,7 @@ class App extends Component {
         </div>
       );
 
-      style.backgroundColor = 'red';
-      style.border = '1px solid red';
+      btnClass = Classes.Red;
     }
 
     const classes = [];
@@ -165,7 +165,7 @@ class App extends Component {
         <h1>Hi, I'm a React App</h1>
         <p className={classes.join(' ')}>This is really working!</p>
         <button
-          style={style}
+          className={btnClass}
           onClick={this.togglePersonsHandler}>Toggle persons
         </button>
         {/* Mandamos a llamar la variable que renderea de manera dinámica los elementos del estado */}
