@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import styled from  'styled-components';
+
 import Classes from './App.css';
 import Person from './Person/Person';
 
@@ -52,6 +54,20 @@ import Person from './Person/Person';
 // export default App;
 
 // SOLUCION UTILIZANDO CLASS-BASED COMPONENTS
+
+const StyledButton = styled.button`
+  background-color: ${props => (props.condition ? "red" : "green")};
+  color: white;
+  font: inherit;
+  border: 1px solid ${props => (props.condition ? "salmon" : "green")};
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${props => (props.condition ? "salmon" : "lightgreen")};
+    color: black;
+  }
+`;
 class App extends Component {
   // Definimos el estado de nuestro componente.
   state = {
@@ -127,7 +143,6 @@ class App extends Component {
     // }
 
     let persons = null;
-    let btnClass = '';
 
     // Rendereo dinámico de contenido según una propiedad del estado.
     if (this.state.showPersons) {
@@ -146,8 +161,6 @@ class App extends Component {
           })}
         </div>
       );
-
-      btnClass = Classes.Red;
     }
 
     const classes = [];
@@ -163,11 +176,13 @@ class App extends Component {
     return (
       <div className={Classes.App}>
         <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(' ')}>This is really working!</p>
-        <button
-          className={btnClass}
-          onClick={this.togglePersonsHandler}>Toggle persons
-        </button>
+        <p className={classes.join(" ")}>This is really working!</p>
+        <StyledButton  
+          onClick={this.togglePersonsHandler}
+          condition={this.state.showPersons}
+        >
+            Toggle persons
+        </StyledButton>
         {/* Mandamos a llamar la variable que renderea de manera dinámica los elementos del estado */}
         {persons}
       </div>
