@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import styled from  'styled-components';
 
 import Classes from './App.css';
-import Person from './Person/Person';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 // SOLUCION UTILIZANDO FUNCTION-BASED COMPONENTS Y HOOKS
 // const App = props => {
@@ -54,22 +54,14 @@ import Person from './Person/Person';
 // export default App;
 
 // SOLUCION UTILIZANDO CLASS-BASED COMPONENTS
-
-const StyledButton = styled.button`
-  background-color: ${props => (props.condition ? "red" : "green")};
-  color: white;
-  font: inherit;
-  border: 1px solid ${props => (props.condition ? "salmon" : "green")};
-  padding: 8px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${props => (props.condition ? "salmon" : "lightgreen")};
-    color: black;
-  }
-`;
 class App extends Component {
-  // Definimos el estado de nuestro componente.
+  constructor(props) {
+    super(props);
+
+    console.log('[App.js] constructor');
+  }
+
+  // Definimos el estado de nuestro componente. Esto puede ser realizado dentro del constructor, esta manera de hacerlo es solamente una nueva funcionalidad de ES6 que crea un constructor y super(props) de manera implícita.
   state = {
     persons: [
       { id: 'asdf1', name: 'Diego', age: 24 },
@@ -77,17 +69,10 @@ class App extends Component {
     ]
   };
 
-  // Función para cambiar uno de los valores del estado a partir del handler de un evento.
-  // switchNameHandler = (newName) => {
-  //   this.setState({
-  //     persons: [
-  //       { name: 'Diego Fernando', age: 24 },
-  //       { name: newName, age: 28 }
-  //     ],
-  //     showPersons: false
-  //   });
-  // };
-
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }
   // Función para manejar los cambios en un input, esto modifica el estado del componente. 
   nameChangedHandler = (event, id) => {
     // Encontramos el index de la persona dentro del estado.
@@ -131,7 +116,12 @@ class App extends Component {
     });
   }
 
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+
   render() {
+    console.log('[App.js] render');
     // Ejemplo de cómo dar estilo inline.
     // const style = {
     //   backgroundColor: 'green',
@@ -147,42 +137,22 @@ class App extends Component {
     // Rendereo dinámico de contenido según una propiedad del estado.
     if (this.state.showPersons) {
       persons = (
-        <div>
-          {/* Uso de la función map para renderear de manera dinámica los elementos presentes en mi estado */}
-          {this.state.persons.map((person, index) => {
-            return <Person
-              click={() => this.deletePersonHandler(index)}
-              name={person.name}
-              age={person.age}
-              key={person.id}
-              // Para este evento necesitamos obtener el evento y pasarlo a la siguiente función, además de pasar el id de la persona que se debe modificar.
-              changed={(event) => this.nameChangedHandler(event, person.id)}
-            />
-          })}
-        </div>
+          <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler}
+          />
       );
-    }
-
-    const classes = [];
-
-    if (this.state.persons.length <= 1) {
-      classes.push(Classes.red);
-    }
-
-    if (this.state.persons.length <= 0) {
-      classes.push(Classes.bold);
     }
 
     return (
       <div className={Classes.App}>
-        <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(" ")}>This is really working!</p>
-        <StyledButton  
-          onClick={this.togglePersonsHandler}
-          condition={this.state.showPersons}
-        >
-            Toggle persons
-        </StyledButton>
+        <Cockpit
+          title={this.props.appTitle}
+          persons={this.state.persons}
+          clicked={this.togglePersonsHandler}
+          condition={this.state.showPersons} 
+        />
         {/* Mandamos a llamar la variable que renderea de manera dinámica los elementos del estado */}
         {persons}
       </div>
