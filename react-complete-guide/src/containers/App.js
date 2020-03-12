@@ -4,6 +4,8 @@ import Classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
+import WithClass from "../HOC/WithClass";
+
 // SOLUCION UTILIZANDO FUNCTION-BASED COMPONENTS Y HOOKS
 // const App = props => {
 //   const [personsState, setPersonsState] = useState({
@@ -59,6 +61,7 @@ class App extends Component {
     super(props);
 
     console.log('[App.js] constructor');
+    this.titleRef = React.createRef();
   }
 
   // Definimos el estado de nuestro componente. Esto puede ser realizado dentro del constructor, esta manera de hacerlo es solamente una nueva funcionalidad de ES6 que crea un constructor y super(props) de manera implícita.
@@ -66,7 +69,8 @@ class App extends Component {
     persons: [
       { id: 'asdf1', name: 'Diego', age: 24 },
       { id: 'asdf2', name: 'Cris', age: 28 }
-    ]
+    ],
+    authenticated: false
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -116,8 +120,17 @@ class App extends Component {
     });
   }
 
+  loginHandler = () => {
+    this.setState((prevState, props) => {
+      return {
+        authenticated: !prevState.authenticated
+      }
+    })
+  }
+
   componentDidMount() {
     console.log('[App.js] componentDidMount');
+    this.titleRef.current.style.color = "green";
   }
 
   render() {
@@ -141,21 +154,26 @@ class App extends Component {
             persons={this.state.persons}
             clicked={this.deletePersonHandler}
             changed={this.nameChangedHandler}
+            isAuthenticated={this.state.authenticated}
           />
       );
     }
 
     return (
-      <div className={Classes.App}>
+      <WithClass className={Classes.App}>
+        <h2 ref={this.titleRef}>
+          Este elemento tiene una Ref que lo hace cambiar de color
+        </h2>
         <Cockpit
           title={this.props.appTitle}
           persons={this.state.persons}
           clicked={this.togglePersonsHandler}
-          condition={this.state.showPersons} 
+          condition={this.state.showPersons}
+          login={this.loginHandler}
         />
         {/* Mandamos a llamar la variable que renderea de manera dinámica los elementos del estado */}
         {persons}
-      </div>
+      </WithClass>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }

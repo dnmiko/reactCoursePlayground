@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from 'styled-components';
 
 import Classes from "./Cockpit.css";
 
-const cockpit = props => {
+const cockpit = (props) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    console.log('[Cockpit.js] useEffect for a change in persons')
+  }, [props.persons]);
+  
   const StyledButton = styled.button`
     background-color: ${props => (props.condition ? "red" : "green")};
     color: white;
@@ -38,6 +43,11 @@ const cockpit = props => {
       >
         Toggle persons
       </StyledButton>
+      <button
+        onClick={props.login}
+      >
+        Log in
+      </button>
     </div>
   );
 };

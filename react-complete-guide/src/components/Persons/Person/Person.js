@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 
-import classes from './Person.css';
+//High order component para envolver los componentes sin necesidad de tener un contenedor div.
+// import WithClass from "../../../HOC/WithClass";
+import Auxiliar from "../../../HOC/Auxiliar";
+import withClassFunction from "../../../HOC/withClassFunction";
 
-const person = (props) => {
-    return (
-      <div className={classes.Person}>
-        <p onClick={props.click}>
-          I'm {props.name} and I am {props.age} years old!
-        </p>
-        <p>{props.children}</p>
-        <input type="text" onChange={props.changed} value={props.name} />
-      </div>
-    );
+import classes from "./Person.css";
+
+const person = props => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const inputReference = useRef(null);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    inputReference.current.focus();
+  }, []);
+
+  return (
+    //Este HOC no hace nada más que envolver los JSX para que estén dentro de un wrapper
+    <Auxiliar>
+      {props.isAuthenticated ? <p>Estoy autenticado</p> : <p>Please Log in</p>}
+      <p onClick={props.click}>
+        I'm {props.name} and I am {props.age} years old!
+      </p>
+      <p>{props.children}</p>
+      <input
+        ref={inputReference}
+        type="text"
+        onChange={props.changed}
+        value={props.name}
+      />
+    </Auxiliar>
+  );
 };
 
-export default person;
+person.propTypes = {
+  click: PropTypes.func,
+  name: PropTypes.string,
+  age: PropTypes.number,
+  changed: PropTypes.func
+};
+
+export default withClassFunction(person, classes.Person);
