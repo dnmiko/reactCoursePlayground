@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Classes from './App.css';
-import Persons from '../components/Persons/Persons';
-import Cockpit from '../components/Cockpit/Cockpit';
+import Classes from "./App.css";
+import Persons from "../components/Persons/Persons";
+import Cockpit from "../components/Cockpit/Cockpit";
 
 import WithClass from "../HOC/WithClass";
+import AuthContext from "../context/auth-context";
 
 // SOLUCION UTILIZANDO FUNCTION-BASED COMPONENTS Y HOOKS
 // const App = props => {
@@ -60,33 +61,33 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    console.log('[App.js] constructor');
+    console.log("[App.js] constructor");
     this.titleRef = React.createRef();
   }
 
   // Definimos el estado de nuestro componente. Esto puede ser realizado dentro del constructor, esta manera de hacerlo es solamente una nueva funcionalidad de ES6 que crea un constructor y super(props) de manera implícita.
   state = {
     persons: [
-      { id: 'asdf1', name: 'Diego', age: 24 },
-      { id: 'asdf2', name: 'Cris', age: 28 }
+      { id: "asdf1", name: "Diego", age: 24 },
+      { id: "asdf2", name: "Cris", age: 28 },
     ],
-    authenticated: false
+    authenticated: false,
   };
 
   static getDerivedStateFromProps(props, state) {
-    console.log('[App.js] getDerivedStateFromProps', props);
+    console.log("[App.js] getDerivedStateFromProps", props);
     return state;
   }
-  // Función para manejar los cambios en un input, esto modifica el estado del componente. 
+  // Función para manejar los cambios en un input, esto modifica el estado del componente.
   nameChangedHandler = (event, id) => {
     // Encontramos el index de la persona dentro del estado.
-    const personIndex = this.state.persons.findIndex(p => {
+    const personIndex = this.state.persons.findIndex((p) => {
       return p.id === id;
     });
 
     // Creamos un nuevo objeto igual al objeto del estado que corresponde a la persona en cuestión.
     const person = {
-      ...this.state.persons[personIndex]
+      ...this.state.persons[personIndex],
     };
 
     // Cambiamos el nombre en el nuevo objeto.
@@ -98,17 +99,17 @@ class App extends Component {
 
     // Actualizamos el estado.
     this.setState({
-      persons: persons
+      persons: persons,
     });
-  }
+  };
 
   // Función que hace switch a una propiedad del estado cuando se da clic en un botón.
   togglePersonsHandler = () => {
     const currentState = this.state.showPersons;
     this.setState({
-      showPersons: !currentState
-    })
-  }
+      showPersons: !currentState,
+    });
+  };
 
   // Función que remueve a una persona del estado.
   deletePersonHandler = (personIndex) => {
@@ -116,25 +117,26 @@ class App extends Component {
     // Método que elimina un elemento de un arreglo a partir de un index.
     persons.splice(personIndex, 1);
     this.setState({
-      persons: persons
+      persons: persons,
     });
-  }
+  };
 
   loginHandler = () => {
+    console.log("HELOOO");
     this.setState((prevState, props) => {
       return {
-        authenticated: !prevState.authenticated
-      }
-    })
-  }
+        authenticated: !prevState.authenticated,
+      };
+    });
+  };
 
   componentDidMount() {
-    console.log('[App.js] componentDidMount');
+    console.log("[App.js] componentDidMount");
     this.titleRef.current.style.color = "green";
   }
 
   render() {
-    console.log('[App.js] render');
+    console.log("[App.js] render");
     // Ejemplo de cómo dar estilo inline.
     // const style = {
     //   backgroundColor: 'green',
@@ -150,12 +152,12 @@ class App extends Component {
     // Rendereo dinámico de contenido según una propiedad del estado.
     if (this.state.showPersons) {
       persons = (
-          <Persons
-            persons={this.state.persons}
-            clicked={this.deletePersonHandler}
-            changed={this.nameChangedHandler}
-            isAuthenticated={this.state.authenticated}
-          />
+        <Persons
+          persons={this.state.persons}
+          clicked={this.deletePersonHandler}
+          changed={this.nameChangedHandler}
+          isAuthenticated={this.state.authenticated}
+        />
       );
     }
 
@@ -164,15 +166,21 @@ class App extends Component {
         <h2 ref={this.titleRef}>
           Este elemento tiene una Ref que lo hace cambiar de color
         </h2>
-        <Cockpit
-          title={this.props.appTitle}
-          persons={this.state.persons}
-          clicked={this.togglePersonsHandler}
-          condition={this.state.showPersons}
-          login={this.loginHandler}
-        />
-        {/* Mandamos a llamar la variable que renderea de manera dinámica los elementos del estado */}
-        {persons}
+        <AuthContext.Provider
+          value={{
+            authenticated: this.state.authenticated,
+            login: this.loginHandler,
+          }}
+        >
+          <Cockpit
+            title={this.props.appTitle}
+            persons={this.state.persons}
+            clicked={this.togglePersonsHandler}
+            condition={this.state.showPersons}
+          />
+          {/* Mandamos a llamar la variable que renderea de manera dinámica los elementos del estado */}
+          {persons}
+        </AuthContext.Provider>
       </WithClass>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));

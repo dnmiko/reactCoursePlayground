@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import styled from 'styled-components';
 
 import Classes from "./Cockpit.css";
+import AuthContext from "../../context/auth-context";
 
 const cockpit = (props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -22,6 +23,8 @@ const cockpit = (props) => {
       color: black;
     }
   `;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const authContext = useContext(AuthContext);
 
   const classes = [];
 
@@ -37,17 +40,10 @@ const cockpit = (props) => {
     <div>
       <h1>{props.title}</h1>
       <p className={classes.join(" ")}>This is really working!</p>
-      <StyledButton 
-        onClick={props.clicked} 
-        condition={props.condition}
-      >
+      <StyledButton onClick={props.clicked} condition={props.condition}>
         Toggle persons
       </StyledButton>
-      <button
-        onClick={props.login}
-      >
-        Log in
-      </button>
+      <button onClick={authContext.login}>Log in</button>
     </div>
   );
 };

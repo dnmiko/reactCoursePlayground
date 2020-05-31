@@ -9,7 +9,6 @@ const persons = (props) => props.persons.map((person, index) => {
         name={person.name}
         age={person.age}
         key={person.id}
-        isAuthenticated={props.isAuthenticated}
         // Para este evento necesitamos obtener el evento y pasarlo a la siguiente función, además de pasar el id de la persona que se debe modificar.
         changed={event => props.changed(event, person.id)}
       />
