@@ -1,0 +1,99 @@
+/*----- Better Project Structure -----*/
+    - En los componentes que manejan estado y mucha lógica, es una mejor práctica dejar el método render con la menor cantidad de jsx para renderear. Es mejor entonces crear subcomponentes.
+    - Es buena idea tener una carpeta dentro de la carpeta de source con los componentes, una con los assets.
+    - También, si un componente solamente es creado para ser rendereado por otro componente, podemos poner esa carpeta dentro de la carpeta del componente padre.
+
+/*----- Stateless vs Stateful Components -----*/
+    - Los componentes que no tienen ninguna lógica de estado son muy predecibles ya que sólo renderean loq ue las props le pasan. 
+    - Los componentes que manejan estado son poco predecibles, pero mientras menos sean será mucho más fácil mantener la aplicación.
+    - No hay que olvidar que, ahora con la versión 16.8 de React, con la introducción de Hooks, los componentes Stateful no son solamente aquellos basados en clases, sino que también pueden ser componentes funcionales que manejan estado.
+
+/*----- Component Lifecycle - Creation -----*/
+    - Sólo está disponible en los componentes de clase.
+    - El primer estado, relacionado con la creación del componente es el constructor. Se utiliza para definir un estado inicial. NO DEBEMOS CAUSAR CAMBIOS EN EL CONSTRUCTOR, por ejemplo requests https, analitycs, local storage.
+    - El segundo método o estado es getDerivedStateFromProps(props, state). Sirve para reflejar algún cambio en las propiedades en el estado del componente. Sincroniza el estado con algún valor de las props. De nuevo, NO DEBEMOS CAUSAR CAMBIOS EN EL CONSTRUCTOR (Side effects).
+    - El tercer método o estado es el render(), sirve para preparar y estructurar nuestro JSX y renderearlo en el front.
+    - Después se renderean todos los componentes hijos dentro de mi componente. 
+    - El cuarto estado o método es componentDidMount(), se ejecuta una vez que todos los componentes dentro de mi componente hayan sido rendereados. Aquí podemos causar cambios (side effects), como requests de http o guardar cosas en el local storage. NO DEBEMOS MODIFICAR EL ESTADO ya que causaríamos un ciclo de re-render. 
+    - RENDER NO ACTUALIZA EL DOM, lo que hace el método render es actualizar el DOM virtual de React y luego compararlo contra el DOM real, si algo necesita actualizarse, renderea solamente esa parte del DOM real.
+
+/*----- Component Lifecycle - Update for Props Changes -----*/
+    - Los dos triggers que existen para que un componente sea re-evaluado por React son un cambio en el estado y un cambio en las props.
+    - El primero método es getDerivedStateFromProps(props, state). De nuevo, sirve para reflejar cambios en las props en el estado.
+    - shouldComponentUpdate(nextProps, nextState) se utiliza para cancelar el proceso de actualizar el componente. En él se decido si es necesario o no re-evaluar y re-renderear un componente.
+    - Después se vuelve a ejecutar el método render, evalua las condiciones necesarias y vuelve a actualizar el DOM virtual, que a su vez y SÓLO SI ES NECESARIO ACTUALIZA EL DOM REAL.
+    - Después se actualizan todas las propiedades y estados de los componentes hijos.
+    - Luego se ejecuta el método getSnapshotBeforeUpdate(prevProps, prevState) que toma la configuración del componente antes de actualizar y lo guarda en un snapshot. Este método regresa un objeto o información que es el snapshot, esta información es uno de los parámetros de componentDidUpdate!!!
+    - Finalmente se ejecutael método componentDidUpdate(), en este componente se pueden hacer side effects como llamadas de https, pero NO SE PUEDE ACTUALIZAR EL ESTADO, sino entras en un loop. Este método recibe tres posibles parámetros (prevProps, prevState, snapshot). Este último es el return del método getSnapshotBeforeUpdate.
+
+/*----- useEffect() en componentes funcionales -----*/
+    - Agrega prácticamente toda la funcionalidad de componentes basados en clase a los componentes de funciones.
+    - Recibe como parámetro una función sin parámetros que se ejecutará por cada ciclo de render.
+    - Es componentDidUpdate y componentDidMount en un mismo hook.
+    - El segundo parámetro para esta función es un arreglo con las variables que, cuando se identifique un cambio en ellas, se ejecuta este hook. De esta manera obtenemos el comportamiento de componentDidUpdate().
+    - Si tenemos acciones distintas para condiciones distintas, es posible crear dos useEffect independientes.
+    - Si agregamos un arreglo vacío como segundo parámetro, entonces este hook se ejecutará solamente la primera vez que se renderee el componente. De esta manera obtenemos el comportamiendo de componentDidMount().
+
+/*----- Cleaning up with useEffect and class-based components -----*/
+    - componentWillUnmount es útil para escenarios en los que necesitamos hacer algún tipo de limpieza previa a que el componente desaparezca. Por ejemplo, eliminar información de un servidor o del localStorage del navegador.
+    - Podemos utilizar useEffect para obtener este mismo comportamiento para componentes funcionales. SI agregamos un return y una función anónima al primer parámetro y como segundo parámetro un arreglo vacío. Esta función se ejecutará solamente cuando el componente vaya a desaparecer del DOM.
+    - SIn embargo, si no agregamos un segundo parámetro el useEffect de limpieza se ejecutará por cada ciclo de render. Útil si es necesario hacer limpieza cada vez que este componente es rendereado.
+    - Ahora, si agregamos como segundo parámetro un arreglo con las variables que ese componente debe evaluar, entonces el useEffect y la limpieza se ejecutaránpor cada cambio que haya en dichas variables.
+
+/*----- Using shouldComponentUpdate for optimization -----*/
+    - La mejor manera de optimizar la carga de los componentes de React es utilizando el método shouldComponentUpdate verificamos si las nextProps que utilizamos son diferentes de las que tenemos actualmente. En ese caso tenemos que permitir que se vuelva a cargar el componente.
+
+/*----- Optimizing functional components using React.memo() -----*/
+    - La manera de optimizar componentes funcionales es envolviendo el export de los mismo en el método React.memo(). 
+    - Lo que hace es memoizar el componente (guardar un snapshot del mismo y sus inputs) y cada vez que se debe re-renderizar, verifica que los inputs hayan cambiado.
+
+/*----- When should I optimize? -----*/
+    - No debemos agregar estas verificaciones de optimización en todos nuestros componentes. Existen componentes que deben cambiar siempre que su componente padre o sus props se modifiquen, en ese caso, ejecutar estos métodos o React.memo() no es necesario y por lo tanto corres código innecesario.
+
+/*----- PureComponents -----*/
+    - Cuando necesito verificar todas las props en shouldComponentUpdate, la manera más sencilla es extender un PureComponent en vez de sólo component. Los pure component funcionan igual que component, pero siempre ejecutan shouldComponentUpdate para todas las props del componente.
+
+/*----- ¿Cómo React actualiza el DOM? -----*/
+    - Cuando se ejecuta el método render() NO SE ACTUALIZA EL DOM. Lo mismo ocurre con el return() de los componentes funcionales. Render actualiza el DOM virtual, lo que sugiere al DOM real cómo debe verse. LA ejecución de el método render o return pueden llevar al mismo DOM real, por eso existen las optimizaciones para evitar ejecutar llamados innecesarios de esos métodos.
+    - Antes de actualizar el DOM real, React compara el DOM virtual actual con un DOM virtual actualizado o futuro. Son representaciones del DOM en Javascript.
+    - Si React encuentra diferencias entre esos dos DOMs, va y actualiza el DOM real SOLAMENTE EN AQUELLOS LUGARES donde encontró diferencias.
+
+/*----- Rendering adjacent JSX elements -----*/
+    - Sabemos que es necesario regresar solamente un elemento o tag de JSX por componente en React, pero también podemos regresar arreglos con teniendo distintos tags, por ejemplo, un map.
+    - Podemos definir un arreglo con distintos y múltiples tags de JSX y regresarlo para renderear componentes adyacentes sin necesidad de que están dentro de un contenedor.
+    - De esta manera evitamos agregar divs o contenedores que no tienen ninguna funcionalidad hablando de HTML y CSS.
+    - Otra manera de envolver componentes es a través de Componentes de Alto Nivel (High Order Component), creando un componente de alto nivel que regrese la prop children solamente. 
+    - A partir de la versión 16.2 de React, se agregó un HOC a la librería de React llamado Fragment que envuelve múltiples elementos de JSX para regresarlos en una sola llamada.
+    Una práctica muy común es crear un HOC llamado WithClass que recibe una prop, la clase que va a utilizar y con ese componente, envolver a los demás.
+
+/*----- HOC y cómo pasar props dinámicas -----*/
+    - Existen dos maneras de crear High Order Components: una es regresando un componente funcional que regresa un div que envuelve las props.children y puede recibir otros props como clases; la segunda manera es creando una función que regresa un componente funcional que recibe parámetros como una función cualquiera (el componente envuelto, y otras cosas). 
+    - En este caso es donde es váildo tener props dinámicas y utilizar el split operator para regresar {...props} sin saber exactamente cuáles son.
+
+/*----- Cómo actualizar el estado de manera correcta -----*/
+    - Set state no se ejecuta de manera inmediata, sino que se encola para cuando React tenga recursos para actualizar el estado y re renderear. Entonces no puede llamarse de manera síncrona. Por ejemplo, para actualizar un valor del mismo estado por cada cambio.
+    - Para actualizar el estado cuando dependes de una versión antigua del mismo estado, existe una sintaxis diferente de setState, en la que le pasas una función con dos parámetros (prevState, props) => { return { nuevo estado}}. De esta manera puedes utilizar prevState.VALORQUEMEINTERESA para utilziar la versión anterior y estar seguro que el comportamiento es el esperado.
+
+/*----- PropTypes -----*/
+     - Se puede instalar una librería adicional a React llamada prop-types que permite definir un tipo de dato para cada una de las variables que se pasan a los componentes. Se debe definir de la siguiente manera: componente.propTypes = { PROPS: TIPO de dato}
+    - De esta manera, si se pasa un tipo de dato incorrecto (solamente en el modo de desarrollo) aparecerá un error en la consola.
+
+/*----- Refs -----*/
+    - Permiten crear una referencia a cualquier elemento de JSX dentro de la aplicación de React para utilziar después en cualquier manera que necesitemos.
+    - A partir de la versión 16.3 de React, podemos crear this.elementRef con una función de React llamada createRef(), luego bindeamos esa ref con el elemento que queremos referir y listo.
+    - Para componentes funcionales, existe un Hook que podemos utilizar llamado useRef.
+    - En ambos casos debemos utilizar reference.CURRENT para acceder al component.
+    - Es muy importante mandar a llamar estos references después de que el componente haya rendereado, sino no existe la referencia hacia un elemento que aún no existe.
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -62,4 +62,18 @@
     - Sirve para unir una hoja de estilos a un módulo de JavaScript y solamente a un módulo, afectándolo sólo a él sin la  necesidad de que las clases sean únicas a lo largo de todo el proyecto.
     - Es necesario hacer eject del proyecto y modificar algunas variables del archivo webpack.config.js. Es muy útil para trabajar en equipo y que las clases no se llamen igual nunca. 
     - Es necesario crear un objeto que contenga todas las clases del archivo de css que estamos importando para poder utilizarlo en el componente. 
+    - Si se está usando una versión de react scripts posterior a la 2 se puede utilizar css modules sin necesidad de hacer eject, solamente agregando File.modules.css
+    - Se puede hacer una clase global utilizando el prefijo :global, por ejemplo :global .App{}.
+
+/*----- Styled components -----*/
+    - Utilizan un término de ES6 llamado tagged templates ``.
+    - Todas las funciones del componente styled regresan componentes de react que puedes guardar en una variable y utilizar en el mismo código de jsx.
+    - La librería genera clases automáticamente, con nombres únicos y las asigna al componente que crea y te regresa. Estas clases de CSS están definidas en el head del documento.
+    - Entre los tagged template escribimos CSS normal.
+    - A los componentes generados por la librería de Styled COmponents podemos pasarles props como handlers para click y demás.
+
+/*----- Logical errors -----*/
+    - Es posible utilizar el inspector de Google Chrome, en la sección de Sources para poner breakpoints al código y así ver dónde es que nuestro código tiene un error.
+    - Error boundary. Es una nueva funcionalidad añadida en React 16. Es un High Order Component que contiene a los demás componentes solamente para manejar los errores de manera más grácil. 
+
 
