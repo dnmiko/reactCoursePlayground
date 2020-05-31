@@ -1,0 +1,5 @@
+/*----- Planning a React App -----*/
+    - Los tres pasos sugeridos son:
+        + Component tree / Component Structure. Ya que tienes el diseño de la aplicación, es importante dividirlo en componentes y cuál será la estructura que llevarán.
+        + Application State. Definir la información que necesitamos utilizar en la aplicación. 
+        + Components vs. Containers. Se define cuáles serán los componenetes stateless o statefulll 

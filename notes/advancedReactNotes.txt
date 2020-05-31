@@ -85,6 +85,15 @@
     - En ambos casos debemos utilizar reference.CURRENT para acceder al component.
     - Es muy importante mandar a llamar estos references después de que el componente haya rendereado, sino no existe la referencia hacia un elemento que aún no existe.
 
+/*----- Context API -----*/
+    - El context es un objeto de JS disponible globalmente, aunque tú puedes definir en que componentes se tiene acceso a él.
+    - Los elementos de contexto son HOC, es decir, deben envolver a los componentes que necesitamos que accedan a sus valores.
+    - Es necesario seguir manejando la lógica de los componentes en el estado o las props porque un cambio en el Context no dispara un re-render del componente.
+    - El estado que nosotros guardemos en la prop value del Context se actualizará cada vez que el estado del componente padre se actualice.
+    - Además de que deben estar envueltos por el context provider, los componentes de clase que accederán a información del Context deben importarlo en ellos mismos y envolver todo lo que regrese el método render en un Consumer que en vez de regresar código jsx regresa una función que recibe como parámetro el context y que regresa el JSX a renderear donde ya se puede utilizar el context.
+    - Esa manera de utilizar el COntext no te permite acceder a él desde otro lugar que no sea el código JSX, por ejemplo un componentDidMount. 
+    - A partir de la versión 16.6 podemos acceder al COntext a través del contextType, que es un static llamado contextType y DEBE ser igualado al context que quieres utilizar. Entonces, como si fuera una prop más, lo mandamos a llamar como this.context.PROPIEDAD.
+    - Para los componentes funcionales, existe un hook useContext el cual utilizamos para crear una consrante que acceda a esas propiedades y lo utilizamos en el componente funcional.  
 
 
 
