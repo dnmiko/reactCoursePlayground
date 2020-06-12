@@ -1,0 +1,18 @@
+/*----- HTTP requests in React -----*/
+    - No funciona como con aplicaciones basadas en server (server-side rendering) en las que el frontend manda un request al servidor y espera como respuesta una nueva página de HTML. 
+    - Aquí mandamos o recibimos información en JSON normalmente, para modificar cosas tanto en backend como en frontend.
+    - https://jsonplaceholder.typicode.com/ Es una página que tiene una API falsa que puedes utilziar para simular llamados y recibir información en GET y POST, aunque no se almacena nada en ese servidor.
+
+/*----- Interceptors -----*/
+    - Definen código que debe ejecutarse de manera global cada vez que se ejecute una petición de axios, ya sea definir headers o manejar errores por ejemplo.
+    - Podemos agregarlo en el archivo index que es el más global de todos. Al importar axios en esta ubicación, podemos acceder a axios.interceptors y posteriormente a request o response, según lo que queramos manejar.
+    - Cada uno de estos objetos recibe como parámetro dos funciones, una para manejar todos los casos de éxito y una para manejar todos los errores.
+
+/*----- Configuración global de axios -----*/
+    - Hay una manera de configurar de manera global axios para que, en todos los lugares donde utilice, tengamos la misma configuración. 
+    - De nuevo en el index, podemos acceder a axios.defaults y una serie de características que podemos definir de manera global para todas las llamadas.
+
+/*----- Instancias de axios -----*/
+    - Podemos crear distintas instancias de axios, esto signica crear segmentos de axios que cuenten con configuraciones para cada una de ellas. 
+    - Para cada una de ellas se definen distintos archivos donde se exportan instancias con configuraciones especificas. 
+    
