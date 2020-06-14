@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import axios from '../../../axios';
 
 import "./FullPost.css";
 
@@ -8,17 +8,15 @@ class FullPost extends Component {
     loadedContent: null,
   };
 
-  componentDidUpdate() {
-    if (this.props.postId) {
+  componentDidMount() {
+    if (this.props.match.params.postId) {
         if (
           !this.state.loadedContent ||
           (this.state.loadedContent &&
             this.state.loadedContent.id !== this.props.postId)
         )
           axios
-            .get(
-              "/posts/" + this.props.postId
-            )
+            .get("/posts/" + this.props.match.params.postId)
             .then((response) => {
               this.setState({
                 loadedContent: response.data,
@@ -39,11 +37,11 @@ class FullPost extends Component {
   render() {
     let post = <p style={{ textAlign: "center" }}>Please select a Post!</p>;
 
-    if (this.props.postId) {
-        post = <p style={{ textAlign: "center" }}>Loading...</p>;
+    if (this.props.match.params.postId) {
+      post = <p style={{ textAlign: "center" }}>Loading...</p>;
     }
 
-    if (this.props.postId && this.state.loadedContent) {
+    if (this.props.match.params.postId && this.state.loadedContent) {
       post = (
         <div className="FullPost">
           <h1>{this.state.loadedContent.title}</h1>
