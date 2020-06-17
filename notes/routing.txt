@@ -8,3 +8,36 @@
     - Al utilizar el componente de Route de react-router-dom se agregan props al componente que está siendo rendereado, las propiedades son history, match y location, que proveen información útil como los query params e incluso métodos para hacer redireccionamientos sin Links. Sin embargo, estas props no pasan a los hijos de los componentes rendereados por Route, todo esto puede ser transmitido a los componentes hijos de estos containers. 
     - Podemos importar el HOC withRouter en los componentes hijos donde queramos heredar las props mencionadas antes y envolver sus exports con este High Order Component para acceder dichas props.
     - Existe un componente, NavLink, que extiende las capacidades del componente Link, permitiendo asignar clases al Link que está activo para dar estilo a las opciones seleccionadas.
+    - Existe una manera de pedirle al router que renderee solamente una de todas las posibles rutas que hagan match con una ruta, a través del componente Switch y envolviendo todos los Route con Switch.
+    - Una de las props que se agregan al utilizar react-router-dom es history, que ofrece una serie de funciones para moverte a través del stack de páginas del router.
+    - En este objeto history existe una función push que nos permite redirigir de manera programática hacia una nueva página.
+    - También es posible hacer rutas nesteadas, es decir, tener un Route dentro de un componente que ya está siendo servido a través de un Route siempre y cuando ese elemento nesteado esté contenido también por el BrowserRouter. En ese escenario lo mejor es hacerlo de manera dinámica y hacerlo a través del match currentURl.
+    - Existe un componente para redireccionar de una ruta a otra, no redirigir después de una cierta acción, pero más como siempre que entre a una ruta redirigir a otra ruta. El componente es Redirect y tiene una prop from y una to. Se puede utilizar para llevar al usuario a una página después de haber completado una acción. Esto no es muy común y es mejor utilizar la prop history.push para redirigir.
+
+/*----- Guards -----*/
+    - PAra permitir algunas rutas solamente cuando el usuario está autenticado, se necesita de una lógica adicional que verifique si se debe renderear un componente Route dentro del Switch según una serie de condiciones. 
+    - La manera en que lo hicimos en Devf fue creando un nuevo componente llamado PrivateRoute en el que revisábamos si la autenticación era correcta, sino redirigiamos a login, por ejemplo.
+            const PrivateRoute = ({ component: Component, ...rest }) => (
+            <Route {...rest} render={(props) => (
+                checkToken() === true ? <Component {...props} /> : <Redirect to="/login" />
+            )} />
+        )
+
+/*----- Handle 404 -----*/
+    - Si agregamos un component Route sin la prop path este componente manejará todos los paths que no hemos definido y muestra un componente o render en específico.
+
+/*----- Lazily Rendering Routes -----*/
+    - Cada vez que vamos a una ruta se carga o se renderea el bundle completo de la aplicación. Buscamos optimizar performance rendereando solamente las páginas necesarias por ruta.
+    - Para esto necesitamos un High Order Component llamado asyncComponent que se encargue de renderear de manera dinámica los componentes. 
+    - En React 16.6 existe un nuevo componente que lo hace mucho más fácil React.Lazi
+        const MODULE = React.lazy(() => import('ruta/del/componente));
+    - Creamos esa línea de código en vez del import común. Además debemos agregar un nuevo componente de React llamado Suspense que es quien rendereará el componente en el Route. Esto sirve no sólo para renderear cosas en rutas, sino cualquier otro componente que se renderee de manera dinámica.
+
+/*----- Routing and server deployment -----*/
+    - Cuando hacemos deploy del proyecto a un servidor real surge un problema que no ocurre en un servidor de desarrollo. 
+    - Como todos los requests hacia la página pasan primero a través del servidor, si un usuario intenta alcanzar una ruta puede que no se entregue nada o un 404 porque el servidor no sabe que servir para todas las rutas, es React quien sabe. 
+    - Para configurar correctamente el proyecto para un servidor real de producción, es necesario hacer que el servidor redirija todas las rutas y peticiones que le lleguen (incluso el 404) al index.html de React para que se manejen de forma correcta.
+    - Es necesario avsarle a React Router en qué dominio o ruta estamos mostrando nuestra aplicación. A través de un basename.
+    - 
+
+
