@@ -38,6 +38,16 @@
     - Como todos los requests hacia la página pasan primero a través del servidor, si un usuario intenta alcanzar una ruta puede que no se entregue nada o un 404 porque el servidor no sabe que servir para todas las rutas, es React quien sabe. 
     - Para configurar correctamente el proyecto para un servidor real de producción, es necesario hacer que el servidor redirija todas las rutas y peticiones que le lleguen (incluso el 404) al index.html de React para que se manejen de forma correcta.
     - Es necesario avsarle a React Router en qué dominio o ruta estamos mostrando nuestra aplicación. A través de un basename.
-    - 
+
+    /*----- Handle to go back -----*/
+    - Así como existe la prop push dentro de history también existe la prop goBack que es solamente una función que nos regresa a la última ubicación antes de la actual. 
+    - Para que esta propiedad sirva debemos utilizar history push al movernos dentro de la aplicación
+
+/*----- Nested routes -----*/
+    - Dentro del contenedor donde pondremos la nested route tenemos que importar Route de reac-router-dom, el path tiene que estar dentro de la ubicación en la que estemos actualmente en la URL + a donde queremos llegar
+
+/*----- Prevent a form to reload the page when click inside a form -----*/
+    - Pasa el event como el parámeto del onClick del botón y utiliza el método preventDefault del evento.
+    
 
 
