@@ -1,0 +1,7 @@
+/*----- Create parameterized inputs for the form -----*/
+    - Es una buena idea crear componentes que puedan reutilizarse y sean correctamente parametrizados.
+    - Se puede incluso parametrizar al punto en que el input no sea solamente de texto, sino que a través de una prop se especifique si será un textarea, un radio button, etc, utilizando un switch y seteando el valor correspondiente. 
+    - Además, se puede utilizar el spread operator para pasarle a ese componente las mismas props que el componente parametrizado recibe.
+
+/*----- Setting up the JS to configure the form -----*/
+    - Como buena práctica, podemos tener en el componente donde se va a guardar el estado de la forma, dentro del estado una propiedad llamada orderForm en donde tengamos cada uno de los campos que conforman este form y para cada uno de ellos, un objeto con la configuración que deseamos, de esta manera puedo crear formas de manera dinámica.
