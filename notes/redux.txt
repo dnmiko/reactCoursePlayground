@@ -1,0 +1,89 @@
+/*----- How does Redux work - REDUX FLOW -----*/
+    - Utiliza un Central Store en donde se guarda todo el estado de la aplicación. 
+    - Una de las partes más importantes para Redux son las acciones, que son despachadas desde los componentes. Estas acciones pueden además tener un payload para modificar algún valor en el Central Store. Esta acción no modifica el estado en el Central Store, es más como un mensajero.
+    - Los que realizan los cambios en el Central Store son los Reducers. Las acciones llegan a los Reducers y, a través del Type de la acción, identifican qué acción deben tomar para actualizar el estado.
+    - Para leer el estado actualizado desde el Central Store se utilizan Subscriptions que contienen triggers que se ejecutan automáticamente cada vez que se actualiza la información del Central Store.
+    - Finalmente, los componentes se subscriben a través de Subscriptions y reciben la información actualizada del Central Store como props.
+
+/*----- Redux general -----*/
+    - La librería de Redux funciona sola, por lo que podemos instalarla directamente y utilizarla.
+    - Lo primero es generar un store que es donde guardamos la información utilizando la función redux-createStore que recibe como parámetro un reducer para inicializar el store. 
+    - Para crear un reducer 
+        const rootReducer = (state = initialState, action) => {
+            return state;
+        };
+    - Ese reducer se pasa como parámetro al store cuando lo inicializamos
+        const store = createStore(rootReducer);
+    - Utilizamos la nueva funcionalidad de ES6 en la que en un parámetro puedo hacer const rootReducer = (state = initialState) si state no está definido toma el valor por default de initialState
+    - Para hacer dispatch de acciones utilizamos el método redux.dispatch() que recibe como parámetro una acción que es un objeto de JS en donde se define el type de acción que es (un identificador único que debe escribirse todo en mayúsculas sin espacios) y un payload si es necesario. 
+        store.dispatch({ type: "ADD_COUNTER", value: 10 });
+    - Pero para que esto funcione tenemos que mapear cada uno de los type de acciones que vienen desde los dispatchers en el reducer para definir qué debemos hacer en cada uno de los casos.
+    - En el reducer cuando actualicemos los datos del store siempre debe ser de manera inmutable, es decir nunca vamos a modificar directamente el estado, sino que vamos a crear una copia de ese objeto y modificar lo que necesitemos
+    - Finalmente, un reducer que realiza distintas acciones puede verse de la siguinte manera:
+        const rootReducer = (state = initialState, action) => {
+            switch (action.type) {
+                case "INC_COUNTER":
+                return {
+                    ...state,
+                    counter: state.counter + 1,
+                };
+                case "ADD_COUNTER":
+                return {
+                    ...state,
+                    counter: state.counter + action.value,
+                };
+                default:
+                return state;
+            }
+            };
+        - Las subscripciones son útiles para no tener que estar mandando a llamar store.getState() para conocer el estado del store y adivinar si ya cambió o no. 
+        - Se utiliza el método redux-subscribe() que recibe como parámetro una función que se ejecutará cada vez que el store cambie su estado.
+
+/*----- Connecting React with Redux -----*/
+    - Lo primero es crear un store, justo antes o cuando se crea nuestra aplicación, lo más sencillo es tenerlo en el index.js
+        import { createStore } from 'redux';
+        const store =   createStore();
+    - Para incializar ese store necesito un reducer, los reducers los escribiremos en una carpeta store y un archvo reducer.js
+    - Para conectar react con redux no es suficiente la paquetería de redux sola, necesitamos instalar ademas react-redux.
+    - De este nuevo paquete necesitamos importar el componente Provider en el index y envolver el App dentro del Provder como un High Order Component. Este paquete nos permite inyectar el store dentro del estado de los componentes.
+    - El componente Provider necesita de una prop store que contenga el store a manejar.
+    - Ahora necesitamos leer el estado del Store desde los componentes donde se necesita, para esto necesitamos crear una subscripción. Para generar estas subscripciones de manera automática necesitamos importar el método connect desde react-redux. Este objeto de connect debe envolver al componente desde el cual quiero utilizar el estado, pero no es un HOC, es una función que al ejecutarse regresa un High Order Component con el componente dentro de él.
+    - La función connect necesita como parámetro dos cosa: 1. Qué parte del estado necesito consumir desde este componente (porque habrá veces en que tenga un estado muy grande y no sea necesario todo) y 2. Qué dispatchers estoy ejecutando desde este componente (de nuevo, puedo tener muchos en una aplicación y sólo necesitar algunos en este componente).
+    - Para obtener el estado que necesito creamos un const DESPUES de que se cierra mi componente, mapStateToProps en donde diremos cómo manejar el estado del store hacie props de mi componente. El estado del store YA NO ES RECIBIDO COMO STATE EN MI COMPONENTE, porque el estado es algo que se maneja de manera interna por el componente. Aquí Redux es quien está manejando el estado por los componentes por lo que se pasa como props.
+        
+        const mapStateToProps = state => {
+            return {
+                ctr: state.counter
+            }
+        }
+
+        export default connect(mapStateToProps)(Counter);
+    - Después de el código mostrado arriba, connect me regresa el componente COunter con acceso a la información ctr desde el estado del store.
+    - Una vez que realizamos este cambio, todos los lugares donde antes se buscaba el estado ahora deben apuntar a la prop que mapeamos.
+    - Ahora necesitamos crear los dispatch para que las interacciones que tengamos con React modifiquen el estado del store. 
+    - Para esto creamos otra configuración de connect llamada mapDispatchToProps
+        const mapDispatchToProps = dispatch => {
+            return {
+                onIncrementCounter: () => dispatch({ type: 'INCREMENT' })
+            }
+        };
+
+        export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+    - Igual que en el pasado, mapeamos las acciones de dispatch a props, cuando mande a llamar la prop onINcrementCounter se ejecutará el dispatch con la action cuyo type es INCREMENT. Así puedo bindear esa prop al handler de eventos de Click y demás.
+    - Si tengo un componente que no necesita dispatch actions solo dejo así la función connect export default connect(mapStateToProps)(Counter); Si al contrario sólo tengo dispatch y no necesito estado paso null como el primer parámetro export default connect(null, mapDispatchToProps)(Counter);
+    - En general, cuando buscamos agregar como un push de un objeto o elemento a un arreglo se deba hacer con concat, ya que push modifica el valor actual del arreglo y concat crea un nuevo arreglo con el valor agregado.
+    - Errores comunes al copiar de manera inmutable los escenarios https://redux.js.org/recipes/structuring-reducers/immutable-update-patterns/
+    - Como los tipos de las acciones deben llamarse igual tanto en el dispatch donde se crea la acción como en el reducer que mapea las acciones a realizar por cada uno de ellos, es fácil que existan typos entre los dos. La recomendación es tener un documento en donde vivan estos nombres de acciones y solamente los mande a importar en los dos lados para evitar tener typos.
+
+/*----- Combining multiple reducers into one -----*/
+    - Como se mencionó antes, Redux solamente utiliza un reducer, sin importar cuantos tengamos nosotros. Sin embargo, Redux nos da la posibilidad de crear distintos Reducers, para manejar distintas partes del estado, por ejemplo, y al final reducirlos a uno solamente.
+    - Nosotros podemos tener distintos reducers que incluso apunten a las propiedades de estado de otros reducers ya que al final todos van a ser compilados en un solo estado en un solo reducer.
+    - Para que Redux nos ayude a combinar los reducers, necesitamos importar la función combineReducers de la librería de Redux en el index, que es donde instanciamos el store a través del reducer. Esta función recibe un objeto en donde crearemos divisiones de la página a las que asignaremos un reducer.
+    - Para acceder al estado de cada una de estas nuevas secciones o nuevos reducers, Redux agrega un nivel de nesting en donde tenemos que mandar a llamar a la sección del store que creamos para acceder posteriormente a su estado.
+    - Sin embargo, para acceder al estado de un reducer en específico desde otro reducer es distinto. Para poder acceder una propiedad del estado de otro reducer es necesario que ese valor sea transmitido como payload del dispatcher de la acción que ejecuta desde el componente que lo manda a llamar.
+
+/*----- Types of State or Should every state be managed by Redux? -----*/
+    - La respuesta a la pregunta de si debemos utilizar siempre Redux depende del tamaño de mi aplicación y de la complejidad de mi estado. 
+    - Para el tipo de estado en que estamos manejando el estado del UI dentro de un componente, por ejemplo, para mostrar un backdrop o un spinner de loading, no es necesario mandar ese estado a Redux ya que solamente lo utiliza ese componente.
+    - Para el estado persistente de información importante para la aplicación, por ejemplo, una lista de servicios o respuesta de un servidor sí se utiliza Redux, pero solamente para los campos verdadermanete necesarios, no para toda la información que podría vivir en una base de datos en el servidor.
+    - Para el estado del cliente, es decir si mi usuario está o no autenticado, o si tenemos algún tipo de filtro a lo largo de las páginas, para este tipo de aplicaciones definitivamente utilizamos Redux.
