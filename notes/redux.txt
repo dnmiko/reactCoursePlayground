@@ -87,3 +87,11 @@
     - Para el tipo de estado en que estamos manejando el estado del UI dentro de un componente, por ejemplo, para mostrar un backdrop o un spinner de loading, no es necesario mandar ese estado a Redux ya que solamente lo utiliza ese componente.
     - Para el estado persistente de información importante para la aplicación, por ejemplo, una lista de servicios o respuesta de un servidor sí se utiliza Redux, pero solamente para los campos verdadermanete necesarios, no para toda la información que podría vivir en una base de datos en el servidor.
     - Para el estado del cliente, es decir si mi usuario está o no autenticado, o si tenemos algún tipo de filtro a lo largo de las páginas, para este tipo de aplicaciones definitivamente utilizamos Redux.
+
+- A través de Redux podemos solucionar el problema cuando queremos mandar una propiedad de un componente a otro y lo hacemos a través de ya se aquery params o state a través de la librería de react router.
+
+- Si en un proyecto tenemos el BrowserRouter y el Provider en el index, el Provider debe envolver al BrowserRouter.
+
+- Si estamos en un reducer y vamos a modificar una propiedad del estado de mi store que a su vez está dentro de otra propiedad (nested Object), hay que usar el spread iterator para copiar todo el estado y luego tambien para copiar el objeto nesteado.
+
+- Si estamos en un component desde el cual mandamos a llamar la función connect de react-redux y este componente ya está siendo envuelto por un HOC, no hay problema si envolvemos ese HOC con connect siempre y cuando el HOC distribuya las props del componente que está envolviendo {...this.props}

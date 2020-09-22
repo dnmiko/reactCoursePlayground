@@ -1,0 +1,43 @@
+/*----- Crear y bindear un middleware a un store en Redux -----*/
+    - En el archivo index podemos crear un Middleware para Redux, no hay que olvidar que un middleware no es más que una función que se "pega" a la ejecución de un proceso, de manera que cada vez que se ejecute proceso mi función también se ejecute. 
+    - Para este escenario creamos un middleware que solamente hace un log de las acciones de las que hacemos dispatch hacia el store de la siguiente manera: 
+        const logger = (store) => {
+            return (next) => {
+                return (action) => {
+                console.log('[MIddleware] Dispatching', action);
+                const result = next(action);
+                console.log('[Middleware] Next state', store.getState());
+                return result;
+                }
+            }
+        }
+    - Finalmente, tenemos que aplicar este middleware al store que creamos a través de la funcionalidad applyMiddleware de Redux y agregando un segundo parámetro a la creación del Store:
+        const store = createStore(rootReducer, applyMiddleware(logger));
+
+/*----- Redux DevTools -----*/
+    - Así como existe una extensiónd e Chrome que nos ayuda a inspeccionar los componentes de React y conocer su estado, existe una extensión para Redux que nos permite analizar el estado dentro del store:
+    https://github.com/zalmoxisus/redux-devtools-extension
+
+/*----- Ejecutar código asíncrono en Redux -----*/
+    - Para ejecutar código asíncrono debemos utilizar action creators que se definen en el mismo lugar que las acciones y que son funciones que crean acciones. 
+    - Pueden recibir como parámetro el payload que debemos mandar con la acción.
+    - Los action creators pueden utilizarse también en ejecuciones síncronas para mantener un código más limpio en el que todo lo relacionado a las acciones vive en un sólo archivo.
+        export const substract = (valueToSubstract) => {
+            return {
+                type: SUBSTRACT,
+                value: valueToSubstract,
+            };
+        };
+    - Vamos a necesitar el paquete redux-thunk que es un middleware que permite ejecutar un fución asíncrona que eventualmente me va a regresar un action creator.
+    - Para poder ejecutar Redux en procesos asíncronos debemos cambiar un poco la manera en que creamos los create actions
+        export const asyncStore = (valueToStore) => {
+            return (dispatch, getState) => {
+                setTimeout(() => {
+                    dispatch(syncStore(valueToStore));
+                }, 2000)
+            }
+        };
+    - En donde sync store es el action creator síncrono que utilizamos normalmente.
+    - Conforme va creciendo mi aplicación, es una buena práctica tener una carpeta para reducers y una para actions, dentro de la carpeta de actions es posible tener un index.js que sólo haga export de otros archivos. 
+    - Cualquier modificación que se necesite realizar a la información antes de guardarla en el store debe realizarse en el reducer que es el concepto core de Redux y no en los action creators.
+    - También es importante notar que podemos acceder el current state desde los action creators si se decide poner lógica en las action creators.
